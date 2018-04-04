@@ -353,11 +353,11 @@ public abstract class Utils {
      * @return
      */
     public static float roundToNextSignificant(double number) {
-        if (Double.isInfinite(number) || 
-            Double.isNaN(number) || 
+        if (Double.isInfinite(number) ||
+            Double.isNaN(number) ||
             number == 0.0)
             return 0;
-        
+
         final float d = (float) Math.ceil((float) Math.log10(number < 0 ? -number : number));
         final int pw = 1 - (int) d;
         final float magnitude = (float) Math.pow(10, pw);
@@ -375,10 +375,10 @@ public abstract class Utils {
     public static int getDecimals(float number) {
 
         float i = roundToNextSignificant(number);
-        
+
         if (Float.isInfinite(i))
             return 0;
-        
+
         return (int) Math.ceil(-Math.log10(i)) + 2;
     }
 
@@ -552,6 +552,85 @@ public abstract class Utils {
 
     private static Rect mDrawTextRectBuffer = new Rect();
     private static Paint.FontMetrics mFontMetricsBuffer = new Paint.FontMetrics();
+
+    public static void drawXMultiLineText(Canvas c, String text, float x, float y,
+                                          Paint paint,
+                                          MPPointF anchor, float angleDegrees) {
+
+        String firstTextLine = text.split("\n")[0];
+
+        float drawOffsetX = 0.f;
+        float drawOffsetY = 0.f;
+
+        final float lineHeight = paint.getFontMetrics(mFontMetricsBuffer);
+        paint.getTextBounds(firstTextLine, 0, firstTextLine.length(), mDrawTextRectBuffer);
+
+        // Android sometimes has pre-padding
+        drawOffsetX -= mDrawTextRectBuffer.left;
+
+        // Android does not snap the bounds to line boundaries,
+        //  and draws from bottom to top.
+        // And we want to normalize it.
+        drawOffsetY += -mFontMetricsBuffer.ascent;
+
+        // To have a consistent point of reference, we always draw left-aligned
+        Paint.Align originalTextAlign = paint.getTextAlign();
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        if (angleDegrees != 0.f) {
+
+            // Move the text drawing rect in a way that it always rotates around its center
+            drawOffsetX -= mDrawTextRectBuffer.width() * 0.5f;
+            drawOffsetY -= lineHeight * 0.5f;
+
+            float translateX = x;
+            float translateY = y;
+
+            // Move the "outer" rect relative to the anchor, assuming its centered
+            if (anchor.x != 0.5f || anchor.y != 0.5f) {
+                final FSize rotatedSize = getSizeOfRotatedRectangleByDegrees(
+                        mDrawTextRectBuffer.width(),
+                        lineHeight,
+                        angleDegrees);
+
+                translateX -= rotatedSize.width * (anchor.x - 0.5f);
+                translateY -= rotatedSize.height * (anchor.y - 0.5f);
+                FSize.recycleInstance(rotatedSize);
+            }
+
+            c.save();
+            c.translate(translateX, translateY);
+            c.rotate(angleDegrees);
+
+            for (String line: text.split("\n"))
+            {
+                c.drawText(line, drawOffsetX, drawOffsetY, paint);
+                drawOffsetY += paint.descent() - paint.ascent();
+
+            }
+
+            c.restore();
+        } else {
+            if (anchor.x != 0.f || anchor.y != 0.f) {
+
+                drawOffsetX -= mDrawTextRectBuffer.width() * anchor.x;
+                drawOffsetY -= lineHeight * anchor.y;
+
+            }
+
+            drawOffsetX += x + (mDrawTextRectBuffer.width() / 2.0f);
+            drawOffsetY += y;
+
+            for (String line: text.split("\n"))
+            {
+                c.drawText(line, drawOffsetX, drawOffsetY, paint);
+                drawOffsetY += paint.descent() - paint.ascent();
+            }
+
+        }
+
+        paint.setTextAlign(originalTextAlign);
+    }
 
     public static void drawXAxisValue(Canvas c, String text, float x, float y,
                                       Paint paint,
