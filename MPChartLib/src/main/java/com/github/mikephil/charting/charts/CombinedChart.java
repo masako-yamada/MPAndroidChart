@@ -73,7 +73,7 @@ public class CombinedChart extends BarLineChartBase<CombinedData> implements Com
 
         // Default values are not ready here yet
         mDrawOrder = new DrawOrder[]{
-                DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.LINE, DrawOrder.CANDLE, DrawOrder.SCATTER
+                DrawOrder.LINE, DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.SCATTER
         };
 
         setHighlighter(new CombinedHighlighter(this, this));
