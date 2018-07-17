@@ -189,6 +189,11 @@ public class LegendRenderer extends Renderer {
                             label = data.getDataSetByIndex(i).getLabel();
                         }
 
+                        // skip the entry if label is not set
+                        if (label != null && label.length() == 0) {
+                            continue;
+                        }
+
                         computedEntries.add(new LegendEntry(
                                 label,
                                 dataSet.getForm(),
@@ -334,6 +339,7 @@ public class LegendRenderer extends Renderer {
                 for (int i = 0, count = entries.length; i < count; i++) {
 
                     LegendEntry e = entries[i];
+
                     boolean drawingForm = e.form != Legend.LegendForm.NONE;
                     float formSize = Float.isNaN(e.formSize) ? defaultFormSize : Utils.convertDpToPixel(e.formSize);
 
