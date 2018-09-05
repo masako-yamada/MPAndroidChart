@@ -36,11 +36,11 @@ public class XYMarkerView extends MarkerView {
     // callbacks everytime the MarkerView is redrawn, can be used to update the
     // content (user-interface)
     @Override
-    public void refreshContent(Entry e, Highlight highlight) {
+    public void refreshContent(Entry e, Highlight highlight, float posX, float posY) {
 
         tvContent.setText("x: " + xAxisValueFormatter.getFormattedValue(e.getX(), null) + ", y: " + format.format(e.getY()));
 
-        super.refreshContent(e, highlight);
+        super.refreshContent(e, highlight, posX, posY);
     }
 
     @Override

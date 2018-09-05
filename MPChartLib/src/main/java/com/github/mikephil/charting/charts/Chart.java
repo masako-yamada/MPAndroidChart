@@ -742,7 +742,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 continue;
 
             // callbacks to update the content
-            mMarker.refreshContent(e, highlight);
+            mMarker.refreshContent(e, highlight, pos[0], pos[1]);
 
             // draw the marker
             mMarker.draw(canvas, pos[0], pos[1]);

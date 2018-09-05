@@ -33,8 +33,12 @@ public interface IMarker {
      *                  CandleEntry, simply cast it at runtime.
      * @param highlight The highlight object contains information about the highlighted value such as it's dataset-index, the
      *                  selected range or stack-index (only stacked bar entries).
+     * @param posX      This is the X position at which the marker wants to be drawn.
+     *                  You can adjust the offset conditionally based on this argument.
+     * @param posY      This is the X position at which the marker wants to be drawn.
+     *                  You can adjust the offset conditionally based on this argument.
      */
-    void refreshContent(Entry e, Highlight highlight);
+    void refreshContent(Entry e, Highlight highlight, float posX, float posY);
 
     /**
      * Draws the IMarker on the given position on the screen with the given Canvas object.

@@ -30,7 +30,7 @@ public class StackedBarsMarkerView extends MarkerView {
     // callbacks everytime the MarkerView is redrawn, can be used to update the
     // content (user-interface)
     @Override
-    public void refreshContent(Entry e, Highlight highlight) {
+    public void refreshContent(Entry e, Highlight highlight, float posX, float posY) {
 
         if (e instanceof BarEntry) {
 
@@ -48,7 +48,7 @@ public class StackedBarsMarkerView extends MarkerView {
             tvContent.setText("" + Utils.formatNumber(e.getY(), 0, true));
         }
 
-        super.refreshContent(e, highlight);
+        super.refreshContent(e, highlight, posX, posY);
     }
 
     @Override
