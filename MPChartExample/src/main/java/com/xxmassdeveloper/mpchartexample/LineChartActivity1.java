@@ -128,6 +128,9 @@ public class LineChartActivity1 extends DemoBase implements OnSeekBarChangeListe
             // axis range
             yAxis.setAxisMaximum(200f);
             yAxis.setAxisMinimum(-50f);
+
+            // axis label position
+            yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         }
 
 

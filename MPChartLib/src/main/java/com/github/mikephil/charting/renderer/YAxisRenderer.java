@@ -85,6 +85,10 @@ public class YAxisRenderer extends AxisRenderer {
             }
         }
 
+        if (labelPosition == YAxisLabelPosition.INSIDE_CHART) {
+            yoffset -= 1.25 * Utils.calcTextHeight(mAxisLabelPaint, "A");
+        }
+
         drawYLabels(c, xPos, positions, yoffset);
     }
 
